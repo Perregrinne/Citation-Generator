@@ -14,9 +14,9 @@ function checkLabelPlacement()
 function addAuthor()
 {
     //Find the final last name box and determine if it's been filled yet:
-    var finalfield = Number.parseInt(document.getElementById("author-list").getAttribute("data-auths").value);
+    var finalfield = Number.parseInt(document.getElementById("author-list").getAttribute("data-auths")) - 1;
     //If it hasn't been filled yet, don't add a new row.
-    if(document.getElementById("last-name" + finalfield) === null)
+    if(!document.getElementById("last-name" + finalfield).value)
     {
         alert("The authors must have at least a last name before you can add another!");
         return;
