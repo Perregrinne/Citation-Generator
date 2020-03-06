@@ -20,8 +20,7 @@ body {
 label {
     position: absolute;
     line-height: 1.125em;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin: 4px 0 4px 0;
 }
 input {
     line-height: 1.5em;
