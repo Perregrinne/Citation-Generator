@@ -6,8 +6,34 @@ function checkLabelPlacement()
 
     //Then change the left of each one to the input it is "for":
     allLabels.forEach(element => {
-        element.style.left = document.getElementById(element.htmlFor).getBoundingClientRect().left + "px";
+        if(document.getElementById(element.htmlFor).type === "radio")
+        {
+            element.style.left = (document.getElementById(element.htmlFor).getBoundingClientRect().left + 15) + "px";
+            element.style.top = (document.getElementById(element.htmlFor).getBoundingClientRect().top - 10) + "px";
+        }
+        else
+        {
+            element.style.left = document.getElementById(element.htmlFor).getBoundingClientRect().left + "px";
+        }
     });
+
+    //This messes up the radio buttons, so fix those too:
+    /*var allRadio = Array.from(document.getElementsByTagName("input"));
+
+    allRadio.forEach(element => {
+        if(element.type === "radio")
+        {
+            element.style.position = "absolute";
+            element.style.marginRight = "75px";
+            element.style.padding = "15px";
+            element.style.left = (element.getBoundingClientRect().left - 15).toString() + "px";
+        }
+    });*/
+}
+
+function drawUI(element)
+{
+    return;
 }
 
 //Add a new row for author's name (but only if the previous last name field was given):
@@ -193,7 +219,4 @@ function bookAPA()
     document.getElementById("citation").innerHTML = citation;
     //And make sure it's black text:
     document.getElementById("citation").style.color = "#111";
-    
-    //alert(citation);
-    
 }

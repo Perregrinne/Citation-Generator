@@ -10,6 +10,10 @@ body {
 #pad {
     padding: 1% 2.5% 0 2.5%;
 }
+.choice, .rfm {
+    display: inline-block;
+    margin-right: 85px;
+}
 #citation {
     position: absolute;
     left: 2.5%;

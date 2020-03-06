@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="site.css" />
     </head>
-    <body onload="checkLabelPlacement()" data-medium="book" data-format="apa">
+    <body onload="checkLabelPlacement()">
         <div id="container">
             <div id="pad">
                 <h2>Citation Generator</h2>
@@ -17,23 +17,7 @@
                 <br>
                 <hr>
                 <div id="citation-form-div">
-                    <h5>
-                        <div class="choice">
-                            
-                            <input type="radio" id="book" value="book" name="medium" class="rfm" onchange="drawUI(this.id)" checked>
-                            <label for="book" id="lbr" class="fm">Books</label>
-                            <input type="radio" id="website" value="website" name="medium" class="rfm" onchange="drawUI(this.id)">
-                            <label for="website" id="lwr" class="fm">Web</label>
-                            <input type="radio" id="vid" value="vid" name="medium" class="rfm" onchange="drawUI(this.id)">
-                            <label for="vid" id="lvr" class="fm">Video</label>
-                        </div>
-                        <div class="choice">
-                            <label for="mla" id="lmr" class="fm">MLA 8</label>
-                            <input type="radio" id="mla" value="mla" name="format" class="rfm" onchange="drawUI(this.id)">
-                            <label for="apa" id="lar" class="fm">APA 6</label>
-                            <input type="radio" id="apa" value="apa" name="format" class="rfm" onchange="drawUI(this.id)" checked>
-                        </div>
-                    </h5>
+                    <h5>Books (APA 6):</h5>
                     <form id="citation-form" name="citeform" onsubmit="return false;" method="post">
                         <label for="f-initial0" id="lfi">First Name (or initial)</label><label for="m-initial0" id="lmi">Middle Name (or initial)</label><label for="last-name0" id="lln">Last Name</label>
                         <br>
@@ -44,6 +28,7 @@
                             <br>
                         </div>
                         <input type="button" value="+ Author" onclick="addAuthor()">
+                        <!-- TODO: ADD MORE AUTHORS BUTTON! -->
                         <br>
                         <label for="date-pub" id="ldp">Year Published</label>
                         <br>
