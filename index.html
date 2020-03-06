@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Citation Generator</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="site.css" />
+    </head>
+    <body onload="checkLabelPlacement()">
+        <div id="container">
+            <div id="pad">
+                <h2>Citation Generator</h2>
+                <hr>
+                <div id="citation-list">
+                    <h5>Citation:</h5>
+                    <div id="citation">None</div>
+                </div>
+                <br>
+                <hr>
+                <div id="citation-form-div">
+                    <h5>Books (APA 6):</h5>
+                    <form id="citation-form" name="citeform" onsubmit="return false;" method="post">
+                        <label for="f-initial0" id="lfi">First Name (or initial)</label><label for="m-initial0" id="lmi">Middle Name (or initial)</label><label for="last-name0" id="lln">Last Name</label>
+                        <br>
+                        <div id="author-list" data-auths="1">
+                            <input type="text" id="f-initial0" name="finit"/>
+                            <input type="text" id="m-initial0" name="minit"/>
+                            <input type="text" id="last-name0" name="lname"/>
+                            <br>
+                        </div>
+                        <input type="button" value="+ Author" onclick="addAuthor()">
+                        <!-- TODO: ADD MORE AUTHORS BUTTON! -->
+                        <br>
+                        <label for="date-pub" id="ldp">Year Published</label>
+                        <br>
+                        <input type="number" id="date-pub" name="datepub"/>
+                        <br>
+                        <label for="source-title" id="lt">Title</label><label for="edition">Edition Number</label>
+                        <br>
+                        <input type="text" id="source-title" name="sourcetitle"/>
+                        <input type="number" id="edition" name="edition"/>
+                        <br>
+                        <label for="pub-name" id="lpn">Publisher</label><label for="pub-city" id="lpc">City of Publisher</label><label for="pub-loc" id="lpl">State or Country of Publisher</label>
+                        <br>
+                        <input type="text" id="pub-name" name="pubname"/>
+                        <input type="text" id="pub-city" name="pubcity"/>
+                        <input type="text" id="pub-loc" name="publoc"/>
+                        <br>
+                        <label for="source-url" id="lsu">URL (If Found Online)</label>
+                        <br>
+                        <input type="text" id="source-url" name="sourceurl"/>
+                        <br>
+                        <input type="submit" id="submit-button" value="Generate!" onclick="bookAPA()"/>
+                    </form>
+                </div>
+            </div>
+            <hr>
+            <footer>Copyright © 2019 Austin Jacob</footer>
+        </div>
+        <script src="main.js"></script>
+    </body>
+</html>
