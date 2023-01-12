@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A generator for creating bibliography citations in MLA or APA format.">
+    <meta name="author" content="Austin Jacob">
+    <title>Citation Generator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="/favicon16.webp" type="image/x-icon">
+</head>
+<body onload="checkPage()" data-medium="book" data-format="apa">
+    <div class="container py-3">
+        <h1>Citation Generator</h1>
+        <hr>
+        <h5>Citation:</h5>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control text-muted bg-light" name="citationOutput" id="citation-output" value="None." aria-readonly="true" readonly>
+            <button type="button" class="btn btn-secondary">Copy</button>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                    <input type="radio" class="form-check-input" name="medium" id="radio-book" onchange="updateMedia()" checked>
+                    <label class="form-check-label me-2" for="radio-book">Book</label>
+                    <input type="radio" class="form-check-input" name="medium" id="radio-web" onchange="updateMedia()">
+                    <label class="form-check-label me-2" for="radio-web">Web</label>
+                    <input type="radio" class="form-check-input" name="medium" id="radio-video" onchange="updateMedia()">
+                    <label class="form-check-label me-2" for="radio-web">Video</label>
+            </div>
+            <div class="col">
+                    <input type="radio" class="form-check-input" name="format" id="radio-apa" onchange="updateFormat()" checked>
+                    <label class="form-check-label me-2" for="radio-apa">APA 7</label>
+                    <input type="radio" class="form-check-input" name="format" id="radio-mla" onchange="updateFormat()">
+                    <label class="form-check-label me-2" for="radio-mla">MLA 9</label>
+            </div>
+        </div>
+        <div class="row g-3 my-1">
+            <div class="col md-4">
+                <label for="input-first" class="my-1">First Name</label>
+                <input type="text" class="form-control" id="input-first">
+            </div>
+            <div class="col md-4">
+                <label for="input-middle" class="my-1">Middle Name</label>
+                <input type="text" class="form-control" id="input-middle">
+            </div>
+            <div class="col md-4">
+                <label for="input-last" class="my-1">Last Name</label>
+                <input type="text" class="form-control" id="input-last">
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col md-12">
+                <button class="btn btn-primary">+Author</button>
+            </div>
+        </div>
+        <div class="row g-3 my-1">
+            <div class="col md-4">
+                <label for="input-year" class="my-1">Year Published</label>
+                <input type="number" class="form-control" id="input-year">
+            </div>
+            <div class="col md-4"></div>
+            <div class="col md-4"></div>
+        </div>
+        <div class="row g-3 my-1">
+            <div class="col md-4">
+                <label for="input-title" class="my-1">Title</label>
+                <input type="text" class="form-control" id="input-title">
+            </div>
+            <div class="col md-4">
+                <label for="input-edition" class="my-1">Edition Number</label>
+                <input type="number" class="form-control" id="input-edition" min="1">
+            </div>
+            <div class="col md-4"></div>
+        </div>
+        <div class="row g-3 my-1">
+            <div class="col md-4">
+                <label for="input-desc" class="my-1">Description (If No Title)</label>
+                <input type="text" class="form-control" id="input-desc">
+            </div>
+            <div class="col md-4"></div>
+            <div class="col md-4"></div>
+        </div>
+        <div class="row g-3 my-1">
+            <div class="col md-4">
+                <label for="input-publisher" class="my-1">Publisher</label>
+                <input type="text" class="form-control" id="input-publisher">
+            </div>
+            <div class="col md-4">
+                <label for="input-city" class="my-1">City of Publisher</label>
+                <input type="text" class="form-control" id="input-city">
+            </div>
+            <div class="col md-4">
+                <label for="input-state" class="my-1">State or Country of Publisher</label>
+                <input type="text" class="form-control" id="input-state">
+            </div>
+        </div>
+        <div class="row g-3 my-1">
+            <div class="col md-4">
+                <label for="input-url" class="my-1">URL (If Found Online)</label>
+                <input type="text" class="form-control" id="input-url">
+            </div>
+            <div class="col md-4">
+                <label for="input-doi" class="my-1">DOI <i class="bi-question-circle link-secondary" id="doi-info" title=""></i></label>
+                <input type="text" class="form-control" id="input-doi">
+            </div>
+            <div class="col md-4"></div>
+        </div>
+        <div class="row g-3 mb-1 mt-3">
+            <div class="col md-4">
+                <button class="btn btn-success" onclick="generate()">Generate!</button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <footer class="text-center pb-3"></footer>
+    <script src="utils.js"></script>
+    <script src="utils2.js"></script>
+    <script src="apa.js"></script>
+    <script src="mla.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>

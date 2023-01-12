@@ -1,18 +1,26 @@
 <!doctype html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A generator for creating bibliography citations in MLA or APA format.">
+        <meta name="author" content="Austin Jacob">
         <title>Citation Generator</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link rel="stylesheet" href="site.css" />
     </head>
-    <body onload="checkLabelPlacement()" data-medium="book" data-format="apa">
+    <body onload="checkLabelPlacement();checkFooter();" data-medium="book" data-format="apa">
         <div id="container">
             <div id="pad">
                 <h2>Citation Generator</h2>
                 <hr>
                 <div id="citation-list">
                     <h5>Citation:</h5>
-                    <div id="citation">None</div>
+                    <div class="cite-line">
+                        <div id="citation" class="cite-line">None</div>
+                        <button id="copy-button" class="cite-line" onclick="copyCitation()">Copy</button>
+                    </div>
                 </div>
                 <br>
                 <hr>
@@ -20,21 +28,23 @@
                     <h5>
                         <div class="choice">
                             <input type="radio" id="book" value="book" name="medium" class="rfm" onchange="drawUI(this.id)" checked>
-                            <label for="book" id="lbr" class="rfm">Books</label>
+                            <label for="book" id="label-book-radio" class="rfm">Books</label>
                             <input type="radio" id="website" value="website" name="medium" class="rfm" onchange="drawUI(this.id)">
-                            <label for="website" id="lwr" class="rfm">Web</label>
+                            <label for="website" id="label-web-radio" class="rfm">Web</label>
                             <input type="radio" id="vid" value="vid" name="medium" class="rfm" onchange="drawUI(this.id)">
-                            <label for="vid" id="lvr" class="rfm">Video</label>
+                            <label for="vid" id="label-video-radio" class="rfm">Video</label>
                         </div>
                         <div class="choice">
-                            <label for="mla" id="lmr" class="rfm">MLA 8</label>
+                            <label for="mla" id="label-mla-radio" class="rfm">MLA 9</label>
                             <input type="radio" id="mla" value="mla" name="format" class="rfm" onchange="drawUI(this.id)">
-                            <label for="apa" id="lar" class="rfm">APA 6</label>
+                            <label for="apa" id="label-apa-radio" class="rfm">APA 7</label>
                             <input type="radio" id="apa" value="apa" name="format" class="rfm" onchange="drawUI(this.id)" checked>
                         </div>
                     </h5>
                     <form id="citation-form" name="citeform" onsubmit="return false;" method="post">
-                        <label for="f-initial0" id="lfi">First Name (or initial)</label><label for="m-initial0" id="lmi">Middle Name (or initial)</label><label for="last-name0" id="lln">Last Name</label>
+                        <label for="f-initial0" id="label-f-initial">First Name (or initial)</label>
+                        <label for="m-initial0" id="label-m-initial">Middle Name (or initial)</label>
+                        <label for="last-name0" id="label-last-name">Last Name</label>
                         <br>
                         <div id="author-list" data-auths="1">
                             <input type="text" id="f-initial0" name="finit"/>
@@ -44,22 +54,25 @@
                         </div>
                         <input type="button" value="+ Author" onclick="addAuthor()">
                         <br>
-                        <label for="date-pub" id="ldp">Year Published</label>
+                        <label for="date-pub" id="label-date-pub">Year Published</label>
                         <br>
                         <input type="number" id="date-pub" name="datepub"/>
                         <br>
-                        <label for="source-title" id="lt">Title</label><label for="edition">Edition Number</label>
+                        <label for="source-title" id="label-title">Title</label>
+                        <label for="edition">Edition Number</label>
                         <br>
                         <input type="text" id="source-title" name="sourcetitle"/>
                         <input type="number" id="edition" name="edition"/>
                         <br>
-                        <label for="pub-name" id="lpn">Publisher</label><label for="pub-city" id="lpc">City of Publisher</label><label for="pub-loc" id="lpl">State or Country of Publisher</label>
+                        <label for="pub-name" id="label-pub-name">Publisher</label>
+                        <label for="pub-city" id="label-pub-city">City of Publisher</label>
+                        <label for="pub-loc" id="label-pub-loc">State or Country of Publisher</label>
                         <br>
                         <input type="text" id="pub-name" name="pubname"/>
                         <input type="text" id="pub-city" name="pubcity"/>
                         <input type="text" id="pub-loc" name="publoc"/>
                         <br>
-                        <label for="source-url" id="lsu">URL (If Found Online)</label>
+                        <label for="source-url" id="label-source-url">URL (If Found Online)</label>
                         <br>
                         <input type="text" id="source-url" name="sourceurl"/>
                         <br>
@@ -68,9 +81,10 @@
                 </div>
             </div>
             <hr>
-            <footer id="footer"></footer>
+            <footer></footer>
         </div>
-        <script src="main.js"></script>
-        <script>document.getElementById("footer").innerHTML = "Copyright © 2019 - " + new Date().getFullYear() + " Austin Jacob";</script>
+        <script src="utils.js"></script>
+        <script src="apa.js"></script>
+        <script src="mla.js"></script>
     </body>
 </html>

@@ -14,12 +14,20 @@ body {
     display: inline-block;
     margin-right: 85px;
 }
+.cite-line {
+    display: inline;
+}
 #citation {
     position: absolute;
     left: 2.5%;
-    right: 2.5%;
+    right: calc(2.5% + 60px);
     background-color: #EEE;
     color: #AAA;
+    display: block;
+}
+#copy-button {
+    position: absolute;
+    right: 2.5%;
 }
 label {
     position: absolute;
