@@ -81,24 +81,70 @@ function addAuthor()
 
 function updateMedia()
 {
-    document.dataset.medium = document.querySelector('input[name="medium"]:checked').value;
+    document.body.dataset.medium = document.querySelector('input[name="medium"]:checked').value;
     checkFields();
 }
 
 function updateFormat()
 {
-    document.dataset.format = document.querySelector('input[name="format"]:checked').value;
+    document.body.dataset.format = document.querySelector('input[name="format"]:checked').value;
     checkFields();
 }
 
 //I started having multiple things to update on page load,
 //so I like the idea of being able to add things here.
-function checkPage() {
+function checkPage()
+{
     checkFields(); //Run before checkDOIInfo and checkURLInfo or those fields won't exist
     checkThemeIcon();
-    checkDOIInfo();
-    checkURLInfo();
+    checkTooltips();
+    //checkDOIInfo();
+    //checkURLInfo();
     checkFooter();
+}
+
+//Books have tooltips for APA DOI and URLs, and videos have a tooltip for date published.
+//Whenever the list of input fields changes, we update the title attributes using Javascript.
+//The titles could already be set in the HTML, but I dread how that'd make the HTML look.
+//I had to switch from template literals because of how bad it made the JS or tooltip look.
+function checkTooltips()
+{
+    if(document.querySelector("#doi-info"))
+    {
+        document.querySelector("#doi-info").title =
+            "DOI stands for \"Document Object Identifier.\"                      \n" +
+            "                                                                    \n" + 
+            "They are used to identify an article and link it to the web.        \n" +
+            "You might typically see them in one of two forms:                   \n" +
+            "                                                                    \n" +
+            "doi:10.0000/0000000000                                              \n" +
+            "                                                                    \n" + 
+            "- or -                                                              \n" +
+            "                                                                    \n" +
+            "https://dx.doi.org/10.0000/0000000000                               \n" +
+            "                                                                    \n" +
+            "Please copy/paste the entire DOI as you find it: with \"doi:\" or   \n" +
+            "\"https://dx.doi.org/\" at the start of it, followed by the numbers!\n" +
+            "This app does not format the DOI in any special way, so make sure   \n" +
+            "you copy and paste it into the text field exactly as it's given!      ";
+
+        document.querySelector("#url-info").title =
+            "Don't bother with URL if you have the\n" +
+            "DOI already!                         \n" +
+            "                                     \n" +
+            "Also, don't put a DOI URL in this field!";
+    }
+    else if(document.querySelector("#video-date-info"))
+    {
+        document.querySelector("#info-video-date").title = 
+            "If you are having trouble finding the date the video was published:       \n" +
+            "                                                                          \n" +
+            "If it's Youtube, open the video on youtube.com and expand the description \n" +
+            "using the \"show more\" button.                                           \n" +
+            "                                                                          \n" +
+            "If it's Vimeo, open the video on vimeo.com and hover your mouse over where\n" +
+            "it says how long ago the video was published. Or, click \"More\" next to it.";
+    }
 }
 
 //By default, the theme toggle icon is the moon, but if users have "prefers-color-scheme"
@@ -238,7 +284,35 @@ function checkFields()
     }
     else if(medium == "video" && format === "apa")
     {
-        fields.innerHTML = "";
+        fields.innerHTML = `<div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-channel" class="my-1">Channel Name</label>
+            <input type="text" class="form-control" id="input-first">
+        </div>
+        <div class="col md-4">
+            <label for="input-title" class="my-1">Title</label>
+            <input type="text" class="form-control" id="input-title"></div>
+        <div class="col md-4"></div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-date" class="my-1">Date Published <i class="bi-question-circle link-secondary" id="video-date-info" title=""></i></label>
+            <input type="date" class="form-control" id="input-date">
+        </div>
+        <div class="col md-4"></div>
+        <div class="col md-4"></div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-desc" class="my-1">Site Name</label>
+            <input type="text" class="form-control" id="input-desc" placeholder="Youtube, Vimeo, etc...">
+        </div>
+        <div class="col md-4">
+            <label for="input-url" class="my-1">Video URL</label>
+            <input type="text" class="form-control" id="input-url" placeholder="http://www...">
+        </div>
+        <div class="col md-4"></div>
+    </div>`;
     }
     if(medium === "book" && format === "mla")
     {
