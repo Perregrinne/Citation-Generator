@@ -111,6 +111,7 @@ function checkTooltips()
 {
     if(document.querySelector("#doi-info"))
     {
+        //APA book DOI tooltip:
         document.querySelector("#doi-info").title =
             "DOI stands for \"Document Object Identifier.\"                      \n" +
             "                                                                    \n" + 
@@ -128,6 +129,7 @@ function checkTooltips()
             "This app does not format the DOI in any special way, so make sure   \n" +
             "you copy and paste it into the text field exactly as it's given!      ";
 
+        //APA book URL tooltip:
         document.querySelector("#url-info").title =
             "Don't bother with URL if you have the\n" +
             "DOI already!                         \n" +
@@ -136,7 +138,8 @@ function checkTooltips()
     }
     else if(document.querySelector("#video-date-info"))
     {
-        document.querySelector("#info-video-date").title = 
+        //APA video date published tooltip:
+        document.querySelector("#video-date-info").title = 
             "If you are having trouble finding the date the video was published:       \n" +
             "                                                                          \n" +
             "If it's Youtube, open the video on youtube.com and expand the description \n" +
@@ -171,37 +174,6 @@ function toggleTheme()
     const color = document.body.style;
     color.backgroundColor = (color.backgroundColor === "rgb(241, 241, 241)") ? "rgb(26, 26, 26)" : "rgb(241, 241, 241)";
     checkThemeIcon();
-}
-
-//Gives the DOI field a tooltip on hover:
-function checkDOIInfo() {
-    const doiInfo = document.querySelector("#doi-info");
-    const title = `DOI stands for "Document Object Identifier."
-
-They are used to identify an article and link it to the web.
-You might typically see them in one of two forms:
-
-doi:10.0000/0000000000
-
-- or -
-
-https://dx.doi.org/10.0000/0000000000
-
-Please copy/paste the entire DOI as you find it: with "doi:" or
-"https://dx.doi.org/" at the start of it, followed by the numbers!
-This app does not format the DOI in any special way, so make sure
-you copy and paste it into the text field exactly as it's given!`;
-    doiInfo.setAttribute("title", title);
-}
-
-//Gives the URL field a tooltip on hover:
-function checkURLInfo() {
-    const urlInfo = document.querySelector("#url-info");
-    const title = `Don't bother with URL if you have the
-DOI already!
-
-Also, don't put a DOI URL in this field!`;
-    urlInfo.setAttribute("title", title);
 }
 
 function checkFields()
@@ -326,4 +298,5 @@ function checkFields()
     {
         fields.innerHTML = "";
     }
+    checkTooltips();
 }
