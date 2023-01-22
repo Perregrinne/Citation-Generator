@@ -184,23 +184,23 @@ function checkFields()
 
     if(medium === "book" && format === "apa")
     {
-        fields.innerHTML = `<div class="row g-3 my-1">
+        fields.innerHTML = `<div class="row g-3 my-1" id="author-0">
         <div class="col md-4">
-            <label for="input-first" class="my-1 text-nowrap">First Name</label>
-            <input type="text" class="form-control" id="input-first">
+            <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
+            <input type="text" class="form-control" id="input-first-0">
         </div>
         <div class="col md-4">
-            <label for="input-middle" class="my-1 text-nowrap">Middle Name</label>
-            <input type="text" class="form-control" id="input-middle">
+            <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
+            <input type="text" class="form-control" id="input-middle-0">
         </div>
         <div class="col md-4">
-            <label for="input-last" class="my-1 text-nowrap">Last Name</label>
-            <input type="text" class="form-control" id="input-last">
+            <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
+            <input type="text" class="form-control" id="input-last-0">
         </div>
     </div>
     <div class="row g-3">
         <div class="col md-12">
-            <button class="btn btn-primary">+Author</button>
+            <button class="btn btn-primary" onclick="addAuthor()">+Author</button>
         </div>
     </div>
     <div class="row g-3 my-1">
@@ -252,14 +252,54 @@ function checkFields()
     }
     else if(medium == "web" && format === "apa")
     {
-        fields.innerHTML = "";
+        fields.innerHTML = `<div class="row g-3 my-1" id="author-0">
+        <div class="col md-4">
+            <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
+            <input type="text" class="form-control" id="input-first-0">
+        </div>
+        <div class="col md-4">
+            <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
+            <input type="text" class="form-control" id="input-middle-0">
+        </div>
+        <div class="col md-4">
+            <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
+            <input type="text" class="form-control" id="input-last-0">
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col md-12">
+            <button class="btn btn-primary" onclick="addAuthor()">+Author</button>
+        </div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-title" class="my-1">Page Title</label>
+            <input type="text" class="form-control" id="input-title">
+        </div>
+        <div class="col md-4">
+            <label for="input-date" class="my-1">Date Published</label>
+            <input type="date" class="form-control" id="input-date">
+        </div>
+        <div class="col md-4"></div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-site" class="my-1">Site Name</label>
+            <input type="text" class="form-control" id="input-site" placeholder="Youtube, Vimeo, etc...">
+        </div>
+        <div class="col md-4">
+            <label for="input-url" class="my-1">URL</label>
+            <input type="text" class="form-control" id="input-url" placeholder="http://www...">
+        </div>
+        <div class="col md-4"></div>
+    </div>`;
     }
     else if(medium == "video" && format === "apa")
     {
         fields.innerHTML = `<div class="row g-3 my-1">
         <div class="col md-4">
             <label for="input-channel" class="my-1">Channel Name</label>
-            <input type="text" class="form-control" id="input-first">
+            <input type="text" class="form-control" id="input-channel">
         </div>
         <div class="col md-4">
             <label for="input-title" class="my-1">Title</label>
@@ -276,8 +316,8 @@ function checkFields()
     </div>
     <div class="row g-3 my-1">
         <div class="col md-4">
-            <label for="input-desc" class="my-1">Site Name</label>
-            <input type="text" class="form-control" id="input-desc" placeholder="Youtube, Vimeo, etc...">
+            <label for="input-site" class="my-1">Site Name</label>
+            <input type="text" class="form-control" id="input-site" placeholder="Youtube, Vimeo, etc...">
         </div>
         <div class="col md-4">
             <label for="input-url" class="my-1">Video URL</label>
@@ -299,4 +339,45 @@ function checkFields()
         fields.innerHTML = "";
     }
     checkTooltips();
+}
+
+//Add a new row for author's name (but only if the previous last name field was given):
+function addAuthor()
+{
+    const authorNum = parseInt(document.body.dataset.authors);
+    //We check if the previous row has something in the "last name" input, but we
+    //don't check all previous fields, so when compiling the list of authors, we
+    //have to skip any rows where the "last name" field is empty.
+    if(!document.querySelector("#input-last-" + authorNum).value)
+    {
+        alert("The authors must have at least a last name before you can add another!");
+        return;
+    }
+    //APA 7 supports <= 20 authors. Any more, and we list the first 19, followed by ellipses,
+    //then the last. Thus, it's pointless to allow more than 21 rows.
+    if(authorNum >= 20) //Remember: author list starts at "0", so "20" is the 21st author row.
+    {
+        alert("APA 7 only supports up to 20 authors!");
+        return;
+    }
+
+    const authorHTML = `<div class="row g-3 my-1" id="author-${authorNum + 1}">
+    <div class="col md-4">
+        <label for="input-first-${authorNum + 1}" class="my-1 text-nowrap">First Name</label>
+        <input type="text" class="form-control" id="input-first-${authorNum + 1}">
+    </div>
+    <div class="col md-4">
+        <label for="input-middle-${authorNum + 1}" class="my-1 text-nowrap">Middle Name</label>
+        <input type="text" class="form-control" id="input-middle-${authorNum + 1}">
+    </div>
+    <div class="col md-4">
+        <label for="input-last-${authorNum + 1}" class="my-1 text-nowrap">Last Name</label>
+        <input type="text" class="form-control" id="input-last-${authorNum + 1}">
+    </div>
+</div>
+`;
+
+    document.querySelector("#author-" + authorNum).insertAdjacentHTML("afterend", authorHTML);
+    document.body.dataset.authors = parseInt(document.body.dataset.authors) + 1;
+    //TODO: Make sure you skip rows where last name is empty when generating citations!
 }

@@ -47,7 +47,7 @@
         }
     </style>
 </head>
-<body onload="checkPage()" data-medium="book" data-format="apa">
+<body onload="checkPage()" data-medium="book" data-format="apa" data-authors="0">
     <div class="container py-3">
         <div class="intro">
             <h1>Citation Generator</h1>
@@ -71,7 +71,7 @@
                     <input type="radio" class="form-check-input text-nowrap" name="medium" id="radio-web" onchange="updateMedia()" value="web">
                     <label class="form-check-label me-2 text-nowrap" for="radio-web">Web</label>
                     <input type="radio" class="form-check-input text-nowrap" name="medium" id="radio-video" onchange="updateMedia()" value="video">
-                    <label class="form-check-label me-2 text-nowrap" for="radio-web">Video</label>
+                    <label class="form-check-label me-2 text-nowrap" for="radio-video">Video</label>
                 </span>
             </div>
             <div class="col-sm py-1">
@@ -102,7 +102,7 @@
             </div>
             <div class="row g-3">
                 <div class="col md-12">
-                    <button class="btn btn-primary">+Author</button>
+                    <button class="btn btn-primary" onclick="addAuthor()">+Author</button>
                 </div>
             </div>
             <div class="row g-3 my-1">
