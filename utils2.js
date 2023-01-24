@@ -192,7 +192,7 @@ function checkFields()
             <div class="input-group">
                 <input type="number" class="form-control" id="input-year" placeholder="Year">
                 <select class="form-control" id="input-month" placeholder="Month">
-                    <option value="">Month</option>
+                    <option value="">- Month -</option>
                     <option value="January">January</option>
                     <option value="February">February</option>
                     <option value="March">March</option>
@@ -241,7 +241,7 @@ function checkFields()
             <div class="input-group">
                 <input type="number" class="form-control" id="input-year" placeholder="Year">
                 <select class="form-control" id="input-month" placeholder="Month">
-                    <option value="">Month</option>
+                    <option value="">- Month -</option>
                     <option value="January">January</option>
                     <option value="February">February</option>
                     <option value="March">March</option>

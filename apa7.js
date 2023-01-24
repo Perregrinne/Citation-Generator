@@ -182,22 +182,37 @@ function webAPA() {
 function videoAPA() {
     const citation = document.querySelector("#citation-output");
 
-    const channel  = document.querySelector("#input-channel").value;
+    const channel  = document.querySelector("#input-channel").value || "Anonymous";
     const title    = document.querySelector("#input-title").value;
-    const dateVal  = document.querySelector("#input-date").value.split("-");
+    const year     = document.querySelector("#input-year").value;
+    const month    = document.querySelector("#input-month").value;
+    const day      = document.querySelector("#input-day").value;
     const site     = document.querySelector("#input-site").value;
     const url      = document.querySelector("#input-url").value;
 
+    //Error checking:
+    let error = "";
+    if(!title || !site || !url)
+    {
+        error += (!title) ? "A title is required. " : "";
+        error += (!site) ? "The site is required. " : "";
+        error += (!url) ? "The URL is needed, as this cites online videos." : "";
+        citation.value = error;
+        return;
+    }
+
     //Formatting date:
-    //if Month, Day, or Year aren't set, Date() fails and returns Dec. 31, 1969
-    //So, we format date without anything we're missing, but we need at least the year.
+    //Input type="date" fails hard here, as any missing info (day, month, or year),
+    //causes the input to return a null value. The input had to be switched out
+    //with 3 custom inputs. We require a year, or else we return "n.d." (not dated).
+    //If given the day, but not month, only keep the year.
     let date = "";
-    alert("Duuuude: " + dateVal[0] + "," + dateVal[1] + ", " + dateVal[2]);
-    if(!dateVal) { date = "n.d."; }
-    else { date = new Date(dateVal).toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"}); }
+    if(!year) { date = "n.d."; } //All subsequent cases imply year is truthy
+    else if(!day && month) { date += `${year}, ${month}`; }
+    else if(day && month) {date += `${year}, ${month} ${day}`}
+    else { date += `${year}`} //Else if (day && !month) or (!day && !month)
     
-    let citationStr = `${channel}. (${date}). <i>${title}</i>[Video]. ${site}. ${url}`;
-    //Now, set the #citation innerHTML to this ^
+    let citationStr = `${channel}. (${date}). <i>${title}</i>[Video]. ${site}. Retreived from ${url}`;
     citation.value = citationStr;
 }
 
