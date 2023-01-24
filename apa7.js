@@ -212,7 +212,7 @@ function videoAPA() {
     else if(day && month) {date += `${year}, ${month} ${day}`}
     else { date += `${year}`} //Else if (day && !month) or (!day && !month)
     
-    let citationStr = `${channel}. (${date}). <i>${title}</i> [Video]. ${site}. Retreived from ${url}`;
+    let citationStr = `${channel}. (${date}). <i>${title}</i> [Video]. ${site}. Retrieved from ${url}`;
     citation.innerHTML = citationStr;
 }
 
