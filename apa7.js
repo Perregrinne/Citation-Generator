@@ -197,7 +197,7 @@ function videoAPA() {
         error += (!title) ? "A title is required. " : "";
         error += (!site) ? "The site is required. " : "";
         error += (!url) ? "The URL is needed, as this cites online videos." : "";
-        citation.value = error;
+        citation.innerHTML = error;
         return;
     }
 
@@ -212,8 +212,8 @@ function videoAPA() {
     else if(day && month) {date += `${year}, ${month} ${day}`}
     else { date += `${year}`} //Else if (day && !month) or (!day && !month)
     
-    let citationStr = `${channel}. (${date}). <i>${title}</i>[Video]. ${site}. Retreived from ${url}`;
-    citation.value = citationStr;
+    let citationStr = `${channel}. (${date}). <i>${title}</i> [Video]. ${site}. Retreived from ${url}`;
+    citation.innerHTML = citationStr;
 }
 
 
