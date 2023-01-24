@@ -13,11 +13,13 @@ I got sick of other citation generator websites gunking up their websites with l
 
 &#9745; Light/Dark theme toggle (and prefers-color-scheme to detect default)
 
+&#9744; Button that copies citations to the clipboard
+
 &#9744; APA 7 book citations **(In progress)**
 
 &#9744; APA 7 web citations **(In progress)**
 
-&#9744; APA 7 video citations **(In progress)**
+&#9745; APA 7 video citations
 
 &#9744; MLA 9 book citations
 
