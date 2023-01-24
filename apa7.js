@@ -1,49 +1,7 @@
-//Add a new row for author's name (but only if the previous last name field was given).
-//TODO Note: APA 7 allows only 20 authors. Include 19, ellipses, then final author.
-//If more than 20 are given, truncate all names after 19 but keep the last.
-function addAuthor()
-{
-    //Find the final last name box and determine if it's been filled yet:
-    const finalField = Number.parseInt(document.getElementById("author-list").getAttribute("data-auths")) - 1;
-    //If it hasn't been filled yet, don't add a new row.
-    if(!document.getElementById("last-name" + finalField).value)
-    {
-        alert("The authors must have at least a last name before you can add another!");
-        return;
-    }
-
-    //Append the first, middle, and last name inputs:
-    const firstName = document.createElement("input");
-    firstName.type = "text";
-    firstName.id = "f-initial" + document.getElementById("author-list").getAttribute("data-auths");
-    document.getElementById("author-list").appendChild(firstName);
-    document.getElementById(firstName.id).style.margin = "4px 15px 4px 0";
-    document.getElementById(firstName.id).style.left = document.getElementById("label-f-initial").getBoundingClientRect().left + "px";
-
-    const middleName = document.createElement("input");
-    middleName.type = "text";
-    middleName.id = "m-initial" + document.getElementById("author-list").getAttribute("data-auths");
-    document.getElementById("author-list").appendChild(middleName);
-    document.getElementById(middleName.id).style.margin = "4px 15px 4px 0";
-    document.getElementById(middleName.id).style.left = document.getElementById("label-m-initial").getBoundingClientRect().left + "px";
-
-    const lastName = document.createElement("input");
-    lastName.type = "text";
-    lastName.id = "last-name" + document.getElementById("author-list").getAttribute("data-auths");
-    document.getElementById("author-list").appendChild(lastName);
-    document.getElementById(lastName.id).style.margin = "4px 15px 4px 0";
-    document.getElementById(lastName.id).style.left = document.getElementById("label-f-initial").getBoundingClientRect().left + "px";
-
-    //Increment the data-auths value so we can keep track of the number of authors given:
-    document.getElementById("author-list").setAttribute("data-auths", (Number.parseInt(document.getElementById("author-list").getAttribute("data-auths")) + 1).toString());
-    document.getElementById("author-list").appendChild(document.createElement("br"));
-}
-
-
 /*
 Create an APA7 citation for a book.
 */
-function bookAPA()
+function bookAPA() //TODO: Redo this!
 {
     /*
     TODO: When you come back to this, you really need to DRY this out by moving out the
@@ -222,7 +180,25 @@ function webAPA() {
 }
 
 function videoAPA() {
-    //TODO
+    const citation = document.querySelector("#citation-output");
+
+    const channel  = document.querySelector("#input-channel").value;
+    const title    = document.querySelector("#input-title").value;
+    const dateVal  = document.querySelector("#input-date").value.split("-");
+    const site     = document.querySelector("#input-site").value;
+    const url      = document.querySelector("#input-url").value;
+
+    //Formatting date:
+    //if Month, Day, or Year aren't set, Date() fails and returns Dec. 31, 1969
+    //So, we format date without anything we're missing, but we need at least the year.
+    let date = "";
+    alert("Duuuude: " + dateVal[0] + "," + dateVal[1] + ", " + dateVal[2]);
+    if(!dateVal) { date = "n.d."; }
+    else { date = new Date(dateVal).toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"}); }
+    
+    let citationStr = `${channel}. (${date}). <i>${title}</i>[Video]. ${site}. ${url}`;
+    //Now, set the #citation innerHTML to this ^
+    citation.value = citationStr;
 }
 
 

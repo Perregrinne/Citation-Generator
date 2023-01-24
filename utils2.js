@@ -1,82 +1,11 @@
-//Generate:
-//Check which format and medium, and run the corresponding function
-//to generate the citation.
-function generate()
+//I started having multiple things to update on page load,
+//so I like the idea of being able to add things here.
+function checkPage()
 {
-    const medium = document.body.dataset.medium;
-    const format = document.body.dataset.format;
-
-    if(format === "apa")
-    {
-        if(medium === "book")
-        {
-            apaBook();
-        }
-        else if(medium === "web")
-        {
-            apaWeb();
-        }
-        else //if medium === "video"
-        {
-            apaVideo();
-        }
-    }
-    else //if format === "mla"
-    {
-        if(medium === "book")
-        {
-            apaBook();
-        }
-        else if(medium === "web")
-        {
-            apaWeb();
-        }
-        else //if medium === "video"
-        {
-            apaVideo();
-        }
-    }
-}
-
-//Add a new row for author's name (but only if the previous last name field was given).
-//TODO Note: APA 7 allows only 20 authors. Include 19, ellipses, then final author.
-//If more than 20 are given, truncate all names after 19 but keep the last.
-function addAuthor()
-{
-    //Find the final last name box and determine if it's been filled yet:
-    var finalfield = Number.parseInt(document.getElementById("author-list").getAttribute("data-auths")) - 1;
-    //If it hasn't been filled yet, don't add a new row.
-    if(!document.getElementById("last-name" + finalfield).value)
-    {
-        alert("The authors must have at least a last name before you can add another!");
-        return;
-    }
-
-    //Append the first, middle, and last name inputs:
-    var fname = document.createElement("input");
-    fname.type = "text";
-    fname.id = "f-initial" + document.getElementById("author-list").getAttribute("data-auths");
-    document.getElementById("author-list").appendChild(fname);
-    document.getElementById(fname.id).style.margin = "4px 15px 4px 0";
-    document.getElementById(fname.id).style.left = document.getElementById("lfi").getBoundingClientRect().left + "px";
-
-    var mname = document.createElement("input");
-    mname.type = "text";
-    mname.id = "m-initial" + document.getElementById("author-list").getAttribute("data-auths");
-    document.getElementById("author-list").appendChild(mname);
-    document.getElementById(mname.id).style.margin = "4px 15px 4px 0";
-    document.getElementById(mname.id).style.left = document.getElementById("lmi").getBoundingClientRect().left + "px";
-
-    var lname = document.createElement("input");
-    lname.type = "text";
-    lname.id = "last-name" + document.getElementById("author-list").getAttribute("data-auths");
-    document.getElementById("author-list").appendChild(lname);
-    document.getElementById(lname.id).style.margin = "4px 15px 4px 0";
-    document.getElementById(lname.id).style.left = document.getElementById("lfi").getBoundingClientRect().left + "px";
-
-    //Increment the data-auths value so we can keep track of the number of authors given:
-    document.getElementById("author-list").setAttribute("data-auths", (Number.parseInt(document.getElementById("author-list").getAttribute("data-auths")) + 1).toString());
-    document.getElementById("author-list").appendChild(document.createElement("br"));
+    checkFields(); //Run before checkTooltips or you'll get errors.
+    checkThemeIcon();
+    checkTooltips();
+    checkFooter();
 }
 
 function updateMedia()
@@ -89,18 +18,6 @@ function updateFormat()
 {
     document.body.dataset.format = document.querySelector('input[name="format"]:checked').value;
     checkFields();
-}
-
-//I started having multiple things to update on page load,
-//so I like the idea of being able to add things here.
-function checkPage()
-{
-    checkFields(); //Run before checkDOIInfo and checkURLInfo or those fields won't exist
-    checkThemeIcon();
-    checkTooltips();
-    //checkDOIInfo();
-    //checkURLInfo();
-    checkFooter();
 }
 
 //Books have tooltips for APA DOI and URLs, and videos have a tooltip for date published.
@@ -169,13 +86,7 @@ function checkThemeIcon()
     }
 }
 
-function toggleTheme()
-{
-    const color = document.body.style;
-    color.backgroundColor = (color.backgroundColor === "rgb(241, 241, 241)") ? "rgb(26, 26, 26)" : "rgb(241, 241, 241)";
-    checkThemeIcon();
-}
-
+//At page load or when a radio button is changed, change what fields are shown:
 function checkFields()
 {
     const medium = document.body.dataset.medium;
@@ -277,8 +188,26 @@ function checkFields()
             <input type="text" class="form-control" id="input-title">
         </div>
         <div class="col md-4">
-            <label for="input-date" class="my-1">Date Published</label>
-            <input type="date" class="form-control" id="input-date">
+            <label for="input-year" class="my-1">Date Published <i class="bi-question-circle link-secondary" id="video-date-info" title=""></i></label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="input-year" placeholder="Year">
+                <select class="form-control" id="input-month" placeholder="Month">
+                    <option value="">Month</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+                <input type="number" class="form-control" id="input-day" min="1" max="31" placeholder="Day">
+            </div>
         </div>
         <div class="col md-4"></div>
     </div>
@@ -308,8 +237,26 @@ function checkFields()
     </div>
     <div class="row g-3 my-1">
         <div class="col md-4">
-            <label for="input-date" class="my-1">Date Published <i class="bi-question-circle link-secondary" id="video-date-info" title=""></i></label>
-            <input type="date" class="form-control" id="input-date">
+            <label for="input-year" class="my-1">Date Published <i class="bi-question-circle link-secondary" id="video-date-info" title=""></i></label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="input-year" placeholder="Year">
+                <select class="form-control" id="input-month" placeholder="Month">
+                    <option value="">Month</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+                <input type="number" class="form-control" id="input-day" min="1" max="31" placeholder="Day">
+            </div>
         </div>
         <div class="col md-4"></div>
         <div class="col md-4"></div>
@@ -341,7 +288,17 @@ function checkFields()
     checkTooltips();
 }
 
-//Add a new row for author's name (but only if the previous last name field was given):
+//Toggle dark/light theme on the page:
+function toggleTheme()
+{
+    const color = document.body.style;
+    color.backgroundColor = (color.backgroundColor === "rgb(241, 241, 241)") ? "rgb(26, 26, 26)" : "rgb(241, 241, 241)";
+    checkThemeIcon();
+}
+
+//Add a new row for author's name (but only if the previous last name field was given).
+//TODO Note: APA 7 allows only 20 authors. Include 19, ellipses, then final author.
+//If more than 20 are given, truncate all names after 19 but keep the last.
 function addAuthor()
 {
     const authorNum = parseInt(document.body.dataset.authors);
@@ -380,4 +337,26 @@ function addAuthor()
     document.querySelector("#author-" + authorNum).insertAdjacentHTML("afterend", authorHTML);
     document.body.dataset.authors = parseInt(document.body.dataset.authors) + 1;
     //TODO: Make sure you skip rows where last name is empty when generating citations!
+}
+
+//Generate:
+//Check which format and medium, and run the corresponding function
+//to generate the citation.
+function generate()
+{
+    const medium = document.body.dataset.medium;
+    const format = document.body.dataset.format;
+
+    if(format === "apa")
+    {
+        if(medium === "book") { bookAPA(); }
+        else if(medium === "web") { webAPA(); }
+        else { videoAPA(); }
+    }
+    else //if format === "mla"
+    {
+        if(medium === "book") { bookMLA(); }
+        else if(medium === "web") { webMLA(); }
+        else { videoMLA(); }
+    }
 }
