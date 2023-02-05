@@ -11,12 +11,16 @@ function checkPage()
 function updateMedia()
 {
     document.body.dataset.medium = document.querySelector('input[name="medium"]:checked').value;
+    document.body.dataset.authors = 0;
     checkFields();
+    //TODO: Maybe store all the field data and hide it so that switching back to
+    //a previously started tab doesn't force you to reinput all fields again.
 }
 
 function updateFormat()
 {
     document.body.dataset.format = document.querySelector('input[name="format"]:checked').value;
+    document.body.dataset.authors = 0;
     checkFields();
 }
 
@@ -96,17 +100,20 @@ function checkFields()
     if(medium === "book" && format === "apa")
     {
         fields.innerHTML = `<div class="row g-3 my-1" id="author-0">
-        <div class="col md-4">
-            <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
-            <input type="text" class="form-control" id="input-first-0">
-        </div>
-        <div class="col md-4">
-            <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
-            <input type="text" class="form-control" id="input-middle-0">
-        </div>
-        <div class="col md-4">
-            <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
-            <input type="text" class="form-control" id="input-last-0">
+        <div class="input-group">
+            <span class="input-group-text">Author</span>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-first-0">
+                <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-middle-0">
+                <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-last-0">
+                <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
+            </div>
         </div>
     </div>
     <div class="row g-3">
@@ -164,17 +171,20 @@ function checkFields()
     else if(medium == "web" && format === "apa")
     {
         fields.innerHTML = `<div class="row g-3 my-1" id="author-0">
-        <div class="col md-4">
-            <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
-            <input type="text" class="form-control" id="input-first-0">
-        </div>
-        <div class="col md-4">
-            <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
-            <input type="text" class="form-control" id="input-middle-0">
-        </div>
-        <div class="col md-4">
-            <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
-            <input type="text" class="form-control" id="input-last-0">
+        <div class="input-group">
+            <span class="input-group-text">Author</span>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-first-0">
+                <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-middle-0">
+                <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-last-0">
+                <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
+            </div>
         </div>
     </div>
     <div class="row g-3">
@@ -209,7 +219,12 @@ function checkFields()
                 <input type="number" class="form-control" id="input-day" min="1" max="31" placeholder="Day">
             </div>
         </div>
-        <div class="col md-4"></div>
+        <div class="col md-4">
+            <div class="form-check">
+                <label for="input-change" class="my-1 form-check-label">The webpage is unlikely to change.</label>
+                <input type="checkbox" class="form-check-input" id="input-change" checked>
+            </div>
+        </div>
     </div>
     <div class="row g-3 my-1">
         <div class="col md-4">
@@ -296,47 +311,78 @@ function toggleTheme()
     checkThemeIcon();
 }
 
-//Add a new row for author's name (but only if the previous last name field was given).
-//TODO Note: APA 7 allows only 20 authors. Include 19, ellipses, then final author.
-//If more than 20 are given, truncate all names after 19 but keep the last.
+//Add a new row for author's name (but only if all last name fields have been filled).
 function addAuthor()
 {
     const authorNum = parseInt(document.body.dataset.authors);
-    //We check if the previous row has something in the "last name" input, but we
-    //don't check all previous fields, so when compiling the list of authors, we
-    //have to skip any rows where the "last name" field is empty.
-    if(!document.querySelector("#input-last-" + authorNum).value)
+    for(let i = 0; i <= authorNum; i++)
     {
-        alert("The authors must have at least a last name before you can add another!");
-        return;
+        if(!document.querySelector("#input-last-" + authorNum).value)
+        {
+            alert("All authors must have at least a last name before you can add another!");
+            return;
+        }
     }
+
     //APA 7 supports <= 20 authors. Any more, and we list the first 19, followed by ellipses,
     //then the last. Thus, it's pointless to allow more than 21 rows.
     if(authorNum >= 20) //Remember: author list starts at "0", so "20" is the 21st author row.
     {
-        alert("APA 7 only supports up to 20 authors!");
+        alert("APA 7 only displays up to 20 authors!");
         return;
     }
 
+    //TODO: When you return, you need to code the removal of author rows. When a row is deleted, all subsequent rows
+    //      Must be renumbered accordingly, and body's data-authors must be decremented.
     const authorHTML = `<div class="row g-3 my-1" id="author-${authorNum + 1}">
-    <div class="col md-4">
-        <label for="input-first-${authorNum + 1}" class="my-1 text-nowrap">First Name</label>
-        <input type="text" class="form-control" id="input-first-${authorNum + 1}">
-    </div>
-    <div class="col md-4">
-        <label for="input-middle-${authorNum + 1}" class="my-1 text-nowrap">Middle Name</label>
-        <input type="text" class="form-control" id="input-middle-${authorNum + 1}">
-    </div>
-    <div class="col md-4">
-        <label for="input-last-${authorNum + 1}" class="my-1 text-nowrap">Last Name</label>
-        <input type="text" class="form-control" id="input-last-${authorNum + 1}">
+    <div class="input-group">
+        <button class="btn btn-outline-danger" id="remove-${authorNum + 1}" type="button" onclick="removeAuthor(${authorNum + 1})" title="Remove author">&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi-trash3 text-danger"></i>&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="input-first-${authorNum + 1}">
+            <label for="input-first-${authorNum + 1}" class="my-1 text-nowrap">First Name</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="input-middle-${authorNum + 1}">
+            <label for="input-middle-${authorNum + 1}" class="my-1 text-nowrap">Middle Name</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="input-last-${authorNum + 1}">
+            <label for="input-last-${authorNum + 1}" class="my-1 text-nowrap">Last Name</label>
+        </div>
     </div>
 </div>
-`;
+    `;
 
     document.querySelector("#author-" + authorNum).insertAdjacentHTML("afterend", authorHTML);
-    document.body.dataset.authors = parseInt(document.body.dataset.authors) + 1;
-    //TODO: Make sure you skip rows where last name is empty when generating citations!
+    document.body.dataset.authors = authorNum + 1;
+}
+
+//Remove Author:
+//Triggered by clicking the trash can next to any author row after the first one,
+//this function takes in the number of the row and deletes it. It updates the
+//number of authors and updates each following row's ID.
+function removeAuthor(authNum)
+{
+    document.querySelector("#author-" + authNum).remove();
+    //Now, we have to update the IDs of all rows that come after this one
+    //Also update removeAuthor() buttons and label-for
+    const dataAuthors = document.body.dataset.authors;
+    for(let i = authNum; i <= dataAuthors; i++)
+    {
+        if(!document.body.querySelector("#author-" + (i + 1))) continue;
+
+        const next = i + 1;
+        document.body.querySelector("#author-" + next).id = "author-" + i;
+        document.body.querySelector("#remove-" + next).setAttribute("onclick", "removeAuthor(" + i + ")");
+        document.body.querySelector("#remove-" + next).id = "remove-" + i;
+        document.body.querySelector("#input-first-" + next).id = "input-first-" + i;
+        document.body.querySelector("#input-middle-" + next).id = "input-middle-" + i;
+        document.body.querySelector("#input-last-" + next).id = "input-last-" + i;
+        document.querySelector(`label[for="input-first-${next}"]`).htmlFor = "input-first-" + i;
+        document.querySelector(`label[for="input-middle-${next}"]`).htmlFor = "input-middle-" + i;
+        document.querySelector(`label[for="input-last-${next}"]`).htmlFor = "input-last-" + i;
+    }
+    document.body.dataset.authors--;
 }
 
 //Generate:
