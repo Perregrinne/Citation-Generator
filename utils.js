@@ -513,7 +513,7 @@ function copyCitation()
     */
     
     const container = document.createElement('div');
-    container.innerHTML = document.querySelector("#citation").innerHTML;
+    container.innerHTML = document.querySelector("#citation-output").innerHTML;
     
     //Don't do visibility or move it off screen, or you might not be able to select it, IIRC.
     container.style.position = 'fixed';
