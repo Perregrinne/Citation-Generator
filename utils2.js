@@ -123,14 +123,6 @@ function checkFields()
     </div>
     <div class="row g-3 my-1">
         <div class="col md-4">
-            <label for="input-year" class="my-1 text-nowrap">Year Published</label>
-            <input type="number" class="form-control" id="input-year">
-        </div>
-        <div class="col md-4"></div>
-        <div class="col md-4"></div>
-    </div>
-    <div class="row g-3 my-1">
-        <div class="col md-4">
             <label for="input-title" class="my-1">Title</label>
             <input type="text" class="form-control" id="input-title">
         </div>
@@ -153,13 +145,16 @@ function checkFields()
             <label for="input-publisher" class="my-1">Publisher</label>
             <input type="text" class="form-control" id="input-publisher">
         </div>
-        <div class="col md-4"></div>
+        <div class="col md-4">
+            <label for="input-year" class="my-1 text-nowrap">Year Published</label>
+            <input type="number" class="form-control" id="input-year">
+        </div>
         <div class="col md-4"></div>
     </div>
     <div class="row g-3 my-1">
         <div class="col md-4">
             <label for="input-doi" class="my-1 text-nowrap">DOI <i class="bi-question-circle link-secondary" id="doi-info" title=""></i></label>
-            <input type="text" class="form-control" id="input-doi">
+            <input type="text" class="form-control" id="input-doi" placeholder="DOI: ...  OR  https://doi.org/...">
         </div>
         <div class="col md-4">
             <label for="input-url" class="my-1 text-nowrap">URL (If Found Online) <i class="bi-question-circle link-secondary" id="url-info" title=""></i></label>
@@ -229,11 +224,11 @@ function checkFields()
     <div class="row g-3 my-1">
         <div class="col md-4">
             <label for="input-site" class="my-1">Site Name</label>
-            <input type="text" class="form-control" id="input-site" placeholder="Youtube, Vimeo, etc...">
+            <input type="text" class="form-control" id="input-site" placeholder="">
         </div>
         <div class="col md-4">
             <label for="input-url" class="my-1">URL</label>
-            <input type="text" class="form-control" id="input-url" placeholder="http://www...">
+            <input type="text" class="form-control" id="input-url" placeholder="">
         </div>
         <div class="col md-4"></div>
     </div>`;
@@ -406,3 +401,96 @@ function generate()
         else { videoMLA(); }
     }
 }
+
+//Get Author List:
+//This function is used by the web and book APA generators
+//to read in all valid authors and return a string used by
+//the citation function to output the authors.
+function getAuthorList()
+{
+    let authorList = "";
+
+    //List the authors (skip this if there aren't any)
+    //=========== Rules: ===========
+    //If we only have a last name, and no first or middle, we have this: Doe, ...next author.
+    //But if this is the last (or only) listed author, don't append a comma, append a period: Doe.
+    //---
+    //If we have all three names, last name is first, followed by first and middle initials: Doe, J. B. 
+    //---
+    //If we have a first name and last, the first name follows the last and is an initial: Doe, J.
+    //---
+    //If we have a middle and last name only, we only keep the last name: Doe.
+    //---
+    //Remember: we always require at least a last name.
+    //---
+    //Before the last author of multiple, use an ampersand: Doe, & Johns.
+    //---
+    //If we have OVER 20 authors, only list 20. Put an ellipses between the 19th and last authors: Doe, ...Johns.
+    //When using ellipses, you DON'T also use an ampersand, as shown in the previous line.
+    //==============================
+    const authNum = parseInt(document.body.dataset.authors);
+    for(let i = 0; i <= authNum; i++)
+    {
+        //We're not dealing with a dumb edge case where someone leaves an empty row and we ignore it.
+        //It messes up the author counts and adds too much unnecessary complexity to this app. I already tried this.
+        //If someone screws up, we just won't finish building the citation, plain and simple.
+        let last = document.querySelector("#input-last-" + i).value;
+        if(!last)
+        {
+            alert("You're missing an author in row number " + parseInt(authNum + 1) + "! You need at least a last name!");
+            return;
+        }
+        else last = last.substring(0, 1).toUpperCase() + last.substring(1);
+
+        //Skip authors twenty through n - 1 (skip to the last one).
+        if(i > 18 && i < authNum && authNum >= 20) continue;
+        //If we're at the last author of more than 20, we first need to use ellipses:
+        if(i === authNum && authNum >= 20) authorList += " ..."; //No ampersand follows the ellipses!
+
+        //If we're about to list the last author of less than 20, use an ampersand:
+        if(i === authNum && i > 0 && authNum < 20) authorList += " & ";
+
+        const first  = document.querySelector("#input-first-"  + i).value;
+        const middle = document.querySelector("#input-middle-" + i).value;
+        //and we already got the last name, above...
+
+        if(first)
+        {
+            authorList += `${last}, ${first.substring(0, 1).toUpperCase()}.`;
+            if(middle) authorList += ` ${middle.substring(0, 1).toUpperCase()}.`;
+        }
+        else authorList += `${last}`;
+
+        if(i < authNum) authorList += ","; //We have more authors to list, so use a comma.
+
+        //"If we just listed the last author and we've only listed their last name":
+        if(i === authNum && !first) authorList += "."; //Then finalize the list with a period
+
+        authorList += " "; //In every possible case, we always append a space, including just before moving on to the date:
+    }
+
+    return authorList;
+}
+
+function getDate()
+{
+    const year  = document.querySelector("#input-year").value;
+    const month = document.querySelector("#input-month").value;
+    const day   = document.querySelector("#input-day").value;
+
+    //Formatting date:
+    //Input type="date" fails hard here, as any missing info (day, month, or year),
+    //causes the input to return a null value. The input had to be switched out
+    //with 3 custom inputs. We require a year, or else we return "n.d." (not dated).
+    //If given the day, but not month, only keep the year.
+    let date = "";
+    if(!year) date = "n.d."; //All subsequent cases imply year is truthy
+    else if(!day && month) date += `${year}, ${month}`;
+    else if(day && month) date += `${year}, ${month} ${day}`;
+    else date += `${year}`; //Else if (day && !month) or (!day && !month)
+
+    return date;
+}
+
+//For MLA, all we have to do is list 1 author, then "et. al."
+//I wish it was that simple for APA...
