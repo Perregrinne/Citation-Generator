@@ -15,17 +15,17 @@ I got sick of other citation generator websites gunking up their websites with l
 
 &#9744; Button that copies citations to the clipboard
 
-&#9744; APA 7 book citations **(In progress)**
+&#9745; APA 7 book citations
 
 &#9745; APA 7 web citations
 
 &#9745; APA 7 video citations
 
-&#9744; MLA 9 book citations
+&#9744; MLA 9 book citations **(In progress)**
 
-&#9744; MLA 9 web citations
+&#9744; MLA 9 web citations **(In progress)**
 
-&#9744; MLA 9 video citations
+&#9744; MLA 9 video citations **(In progress)**
 
 ---
 
