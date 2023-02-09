@@ -13,7 +13,7 @@ I got sick of other citation generator websites gunking up their websites with l
 
 &#9745; Light/Dark theme toggle (and prefers-color-scheme to detect default)
 
-&#9744; Button that copies citations to the clipboard
+&#9745; Button that copies citations to the clipboard
 
 &#9745; APA 7 book citations
 
