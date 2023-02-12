@@ -293,7 +293,78 @@ function checkFields()
     }
     else if(medium == "video" && format === "mla")
     {
-        fields.innerHTML = "";
+        //TODO: Add combined field for author's first/last names. A checkbox can determine multiple authors: use "et al."
+        fields.innerHTML = `<div class="row g-3 my-1" id="author-0">
+        <div class="input-group">
+            <span class="input-group-text">Author</span>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-first-0">
+                <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-middle-0">
+                <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-last-0">
+                <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col md-12">
+            <button class="btn btn-primary" onclick="addAuthor()">+Author</button>
+        </div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+        <label for="input-channel" class="my-1">Channel Name</label>
+        <input type="text" class="form-control" id="input-channel">
+        </div>
+        <div class="col md-4">
+            <label for="input-title" class="my-1">Title</label>
+            <input type="text" class="form-control" id="input-title">
+        </div>
+        <div class="col md-4">
+        </div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-year" class="my-1">Date Published <i class="bi-question-circle link-secondary" id="video-date-info" title=""></i></label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="input-year" placeholder="Year">
+                <select class="form-control" id="input-month" placeholder="Month">
+                    <option value="">- Month -</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+                <input type="number" class="form-control" id="input-day" min="1" max="31" placeholder="Day">
+            </div>
+        </div>
+        <div class="col md-4"></div>
+        <div class="col md-4"></div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-site" class="my-1">Site Name</label>
+            <input type="text" class="form-control" id="input-site" placeholder="Youtube, Vimeo, etc...">
+        </div>
+        <div class="col md-4">
+            <label for="input-url" class="my-1">Video URL</label>
+            <input type="text" class="form-control" id="input-url" placeholder="http://www...">
+        </div>
+        <div class="col md-4"></div>
+    </div>`;
     }
     checkTooltips();
 }
@@ -314,6 +385,9 @@ function toggleTheme()
 //Add a new row for author's name (but only if all last name fields have been filled).
 function addAuthor()
 {
+    //Note: APA 7 supports up to 20 authors and MLA 9 supports 2.
+    const format = document.body.dataset.format;
+
     const authorNum = parseInt(document.body.dataset.authors);
     for(let i = 0; i <= authorNum; i++)
     {
@@ -326,32 +400,36 @@ function addAuthor()
 
     //APA 7 supports <= 20 authors. Any more, and we list the first 19, followed by ellipses,
     //then the last. Thus, it's pointless to allow more than 21 rows.
-    if(authorNum >= 20) //Remember: author list starts at "0", so "20" is the 21st author row.
+    if(authorNum >= 20 && format === "apa") //Remember: author list starts at "0", so "20" is the 21st author row.
     {
-        alert("APA 7 only displays up to 20 authors!");
+        alert("APA 7 only displays up to 20 names, so don't bother listing any more of them.");
+        return;
+    }
+    else if(authorNum >= 2 && format === "mla")
+    {
+        alert("MLA 9 only displays up to 2 names, so don't bother listing more than you have.");
         return;
     }
 
-    //TODO: When you return, you need to code the removal of author rows. When a row is deleted, all subsequent rows
-    //      Must be renumbered accordingly, and body's data-authors must be decremented.
     const authorHTML = `<div class="row g-3 my-1" id="author-${authorNum + 1}">
-    <div class="input-group">
-        <button class="btn btn-outline-danger" id="remove-${authorNum + 1}" type="button" onclick="removeAuthor(${authorNum + 1})" title="Remove author">&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi-trash3 text-danger"></i>&nbsp;&nbsp;&nbsp;&nbsp;</button>
-        <div class="form-floating">
-            <input type="text" class="form-control" id="input-first-${authorNum + 1}">
-            <label for="input-first-${authorNum + 1}" class="my-1 text-nowrap">First Name</label>
-        </div>
-        <div class="form-floating">
-            <input type="text" class="form-control" id="input-middle-${authorNum + 1}">
-            <label for="input-middle-${authorNum + 1}" class="my-1 text-nowrap">Middle Name</label>
-        </div>
-        <div class="form-floating">
-            <input type="text" class="form-control" id="input-last-${authorNum + 1}">
-            <label for="input-last-${authorNum + 1}" class="my-1 text-nowrap">Last Name</label>
+        <div class="input-group">
+            <button class="btn btn-outline-danger" id="remove-${authorNum + 1}" type="button" onclick="removeAuthor(${authorNum + 1})" title="Remove author">&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi-trash3 text-danger"></i>&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-first-${authorNum + 1}">
+                <label for="input-first-${authorNum + 1}" class="my-1 text-nowrap">First Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-middle-${authorNum + 1}">
+                <label for="input-middle-${authorNum + 1}" class="my-1 text-nowrap">Middle Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-last-${authorNum + 1}">
+                <label for="input-last-${authorNum + 1}" class="my-1 text-nowrap">Last Name</label>
+            </div>
         </div>
     </div>
-</div>
-    `;
+        `;
+    
 
     document.querySelector("#author-" + authorNum).insertAdjacentHTML("afterend", authorHTML);
     document.body.dataset.authors = authorNum + 1;
@@ -405,96 +483,6 @@ function generate()
         else if(medium === "web") { webMLA(); }
         else { videoMLA(); }
     }
-}
-
-//Get Author List:
-//This function is used by the web and book APA generators
-//to read in all valid authors and return a string used by
-//the citation function to output the authors.
-function getAuthorList()
-{
-    let authorList = "";
-
-    //List the authors (skip this if there aren't any)
-    //=========== Rules: ===========
-    //If we only have a last name, and no first or middle, we have this: Doe, ...next author.
-    //But if this is the last (or only) listed author, don't append a comma, append a period: Doe.
-    //---
-    //If we have all three names, last name is first, followed by first and middle initials: Doe, J. B. 
-    //---
-    //If we have a first name and last, the first name follows the last and is an initial: Doe, J.
-    //---
-    //If we have a middle and last name only, we only keep the last name: Doe.
-    //---
-    //Remember: we always require at least a last name.
-    //---
-    //Before the last author of multiple, use an ampersand: Doe, & Johns.
-    //---
-    //If we have OVER 20 authors, only list 20. Put an ellipses between the 19th and last authors: Doe, ...Johns.
-    //When using ellipses, you DON'T also use an ampersand, as shown in the previous line.
-    //==============================
-    const authNum = parseInt(document.body.dataset.authors);
-    for(let i = 0; i <= authNum; i++)
-    {
-        //We're not dealing with a dumb edge case where someone leaves an empty row and we ignore it.
-        //It messes up the author counts and adds too much unnecessary complexity to this app. I already tried this.
-        //If someone screws up, we just won't finish building the citation, plain and simple.
-        let last = document.querySelector("#input-last-" + i).value;
-        if(!last)
-        {
-            alert("You're missing an author in row number " + parseInt(authNum + 1) + "! You need at least a last name!");
-            return;
-        }
-        else last = last.substring(0, 1).toUpperCase() + last.substring(1);
-
-        //Skip authors twenty through n - 1 (skip to the last one).
-        if(i > 18 && i < authNum && authNum >= 20) continue;
-        //If we're at the last author of more than 20, we first need to use ellipses:
-        if(i === authNum && authNum >= 20) authorList += " ..."; //No ampersand follows the ellipses!
-
-        //If we're about to list the last author of less than 20, use an ampersand:
-        if(i === authNum && i > 0 && authNum < 20) authorList += " & ";
-
-        const first  = document.querySelector("#input-first-"  + i).value;
-        const middle = document.querySelector("#input-middle-" + i).value;
-        //and we already got the last name, above...
-
-        if(first)
-        {
-            authorList += `${last}, ${first.substring(0, 1).toUpperCase()}.`;
-            if(middle) authorList += ` ${middle.substring(0, 1).toUpperCase()}.`;
-        }
-        else authorList += `${last}`;
-
-        if(i < authNum) authorList += ","; //We have more authors to list, so use a comma.
-
-        //"If we just listed the last author and we've only listed their last name":
-        if(i === authNum && !first) authorList += "."; //Then finalize the list with a period
-
-        authorList += " "; //In every possible case, we always append a space, including just before moving on to the date:
-    }
-
-    return authorList;
-}
-
-function getDate()
-{
-    const year  = document.querySelector("#input-year").value;
-    const month = document.querySelector("#input-month").value;
-    const day   = document.querySelector("#input-day").value;
-
-    //Formatting date:
-    //Input type="date" fails hard here, as any missing info (day, month, or year),
-    //causes the input to return a null value. The input had to be switched out
-    //with 3 custom inputs. We require a year, or else we return "n.d." (not dated).
-    //If given the day, but not month, only keep the year.
-    let date = "";
-    if(!year) date = "n.d."; //All subsequent cases imply year is truthy
-    else if(!day && month) date += `${year}, ${month}`;
-    else if(day && month) date += `${year}, ${month} ${day}`;
-    else date += `${year}`; //Else if (day && !month) or (!day && !month)
-
-    return date;
 }
 
 //Copy generated citation text to the clipboard:
