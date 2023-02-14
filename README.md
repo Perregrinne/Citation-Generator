@@ -23,7 +23,7 @@ I got sick of other citation generator websites gunking up their websites with l
 
 &#9744; MLA 9 book citations **(In progress)**
 
-&#9744; MLA 9 web citations **(In progress)**
+&#9745; MLA 9 web citations
 
 &#9745; MLA 9 video citations
 
