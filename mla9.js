@@ -114,7 +114,7 @@ function webMLA()
 {
     const citation  = document.querySelector("#citation-output");
 
-    const publisher = document.querySelector("#input-publisher").value;
+    let publisher = document.querySelector("#input-publisher").value;
     const title     = document.querySelector("#input-title").value;
     const site      = document.querySelector("#input-site").value;
     const url       = document.querySelector("#input-url").value;
@@ -127,6 +127,8 @@ function webMLA()
     if(title.charAt(title.length - 1) === ".") title = title.substring(0, title.length - 1);
     //If we don't have a title (like when citing a whole website), this won't affect anything anyways.
 
+    if(publisher) publisher += ", ";
+
     //Error checking:
     let error = "";
     error += (!site)      ? "The site is required. "     : "";
@@ -137,8 +139,8 @@ function webMLA()
     
     //Citation building:
     let citationStr = "";
-    if(title) citationStr = `${author}"${title}." <i>${site}</i>, ${date}${url}.${accessed}`;
-    else      citationStr = `${author} <i>${site}</i>, ${date}${url}.${accessed}`;
+    if(title) citationStr = `${author}"${title}." <i>${site}</i>, ${publisher}${date}${url}.${accessed}`;
+    else      citationStr = `${author} <i>${site}</i>, ${publisher}${date}${url}.${accessed}`;
     //Adding a period to the end of the URL is an abomination, and the Modern Language
     //Association should recognize that. It appears as if the period is part of the URL,
     //when in fact, it's not. For the sake of clarity, URLs should have NOTHING after them.
