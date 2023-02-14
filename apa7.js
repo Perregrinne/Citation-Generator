@@ -81,10 +81,10 @@ function getAPADate()
     //causes the input to return a null value. The input had to be switched out
     //with 3 custom inputs. We require a year, or else we return "n.d." (not dated).
     //If given the day, but not month, only keep the year.
-    if(!year) date = "n.d."; //All subsequent cases imply year is truthy
+    if(!year)              date = "n.d."; //All subsequent cases imply year is truthy
     else if(!day && month) date += `${year}, ${month}`;
-    else if(day && month) date += `${year}, ${month} ${day}`;
-    else date += `${year}`; //Else if (day && !month) or (!day && !month)
+    else if( day && month) date += `${year}, ${month} ${day}`;
+    else                   date += `${year}`; //Else if (day && !month) or (!day && !month)
 
     return date;
 }
@@ -118,7 +118,7 @@ function bookAPA()
     }
 
     const authorList = (author0) ? getAPAAuthorList() : "";
-    const date       = (year) ? year : "n.d.";
+    const date       = (year)    ? year               : "n.d.";
 
     //Yes, fullTitle can be a description instead of a title/edition, but we only keep ONE of the two (preferably title)
     let fullTitle = "";
@@ -173,8 +173,9 @@ function webAPA()
                         "September", "October",  "November", "December"];
     const retrieval = (!change) ? `Retrieved ${monthString[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()}, from ` : "";
 
+    //Citation ouput:
     if(!author0) citeStr = `${site}. (${date}). <i>${title}</i>. ${site}. ${retrieval}${url}`;
-    else citeStr = `${authorList}(${date}). <i>${title}</i>. ${site}. ${retrieval}${url}`;
+    else         citeStr = `${authorList}(${date}). <i>${title}</i>. ${site}. ${retrieval}${url}`;
 
     citation.innerHTML = citeStr;
 }
@@ -193,13 +194,14 @@ function videoAPA() {
     let error = "";
     if(!title || !site || !url)
     {
-        error += (!title) ? "A title is required. " : "";
-        error += (!site) ? "The site is required. " : "";
-        error += (!url) ? "The URL is needed, as this cites online videos." : "";
+        error += (!title) ? "A title is required. "                           : "";
+        error += (!site)  ? "The site is required. "                          : "";
+        error += (!url)   ? "The URL is needed, as this cites online videos." : "";
         citation.innerHTML = error;
         return;
     }
     
+    //Citation output:
     let citationStr = `${channel}. (${date}). <i>${title}</i> [Video]. ${site}. Retrieved from ${url}`;
     citation.innerHTML = citationStr;
 }

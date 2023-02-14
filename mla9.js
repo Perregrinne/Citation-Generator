@@ -68,12 +68,41 @@ function getMLADate()
 
     let date = "";
     //We require at least a year, but if the day was given too, we also require a month (or we ignore the day)
-    if(!year) return ""; //If no date is provided, skip the date in the citation.
+    if(!year) return ""; //If no date (at least the year) is provided, skip the date in the citation.
     else if(!day && month) date += `${month} ${year}, `; 
     else if(day && month) date += `${day} ${month} ${year}, `;
     else date += `${year}, `; //Else if (day && !month) or (!day && !month)
 
     return date;
+}
+
+function getDateAccessed()
+{
+    const day   = document.querySelector("#input-access-day").value;
+    const month = document.querySelector("#input-access-month").value;
+    const year  = document.querySelector("#input-access-year").value;
+    const today = document.querySelector("#input-today").checked;
+
+    const date  = new Date();
+    const months = [
+        "Jan.",
+        "Feb.",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "Aug.",
+        "Sept.",
+        "Oct.",
+        "Nov.",
+        "Dec."
+    ];
+
+    if(!today && (!day || !month || !year)) return "";
+    else if(today) return ` Accessed ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}.`;
+
+    return ` Accessed ${day} ${month} ${year}.`;
 }
 
 function bookMLA()
@@ -83,7 +112,38 @@ function bookMLA()
 
 function webMLA()
 {
-    //
+    const citation  = document.querySelector("#citation-output");
+
+    const publisher = document.querySelector("#input-publisher").value;
+    const title     = document.querySelector("#input-title").value;
+    const site      = document.querySelector("#input-site").value;
+    const url       = document.querySelector("#input-url").value;
+
+    const author    = getMLAAuthorList();
+    const date      = getMLADate();
+    const accessed  = getDateAccessed();
+
+    //If the title ends in a period, we don't want to have two periods because we add our own later:
+    if(title.charAt(title.length - 1) === ".") title = title.substring(0, title.length - 1);
+    //If we don't have a title (like when citing a whole website), this won't affect anything anyways.
+
+    //Error checking:
+    let error = "";
+    error += (!site)      ? "The site is required. "     : "";
+    error += (!publisher) ? "The publisher is required." : "";
+    error += (!url)       ? "The url is required."       : "";
+    citation.innerHTML = error;
+    if(error) return;
+    
+    //Citation building:
+    let citationStr = "";
+    if(title) citationStr = `${author}"${title}." <i>${site}</i>, ${date}${url}.${accessed}`;
+    else      citationStr = `${author} <i>${site}</i>, ${date}${url}.${accessed}`;
+    //Adding a period to the end of the URL is an abomination, and the Modern Language
+    //Association should recognize that. It appears as if the period is part of the URL,
+    //when in fact, it's not. For the sake of clarity, URLs should have NOTHING after them.
+
+    citation.innerHTML = citationStr;
 }
 
 function videoMLA()
@@ -97,12 +157,15 @@ function videoMLA()
 
     const author   = getMLAAuthorList();
     const date     = getMLADate();
+    
+    //If the title ends in a period, we don't want to have two periods because we add our own later:
+    if(title.charAt(title.length - 1) === ".") title = title.substring(0, title.length - 1);
 
     //Error checking:
     let error = "";
-    error += (!title) ? "A title is required. " : "";
-    error += (!site) ? "The site is required. " : "";
-    error += (!url) ? "The URL is needed, as this cites online videos." : "";
+    error += (!title) ? "A title is required. "                           : "";
+    error += (!site)  ? "The site is required. "                          : "";
+    error += (!url)   ? "The URL is needed, as this cites online videos." : "";
     citation.innerHTML = error;
     if(error) return;
     

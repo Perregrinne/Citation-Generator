@@ -289,11 +289,105 @@ function checkFields()
     }
     else if(medium == "web" && format === "mla")
     {
-        fields.innerHTML = "";
+        fields.innerHTML = `<div class="row g-3 my-1" id="author-0">
+        <div class="input-group">
+            <span class="input-group-text">Author</span>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-first-0">
+                <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-middle-0">
+                <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-last-0">
+                <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col md-12">
+            <button class="btn btn-primary" onclick="addAuthor()">+Author</button>
+        </div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-title" class="my-1">Article Title</label>
+            <input type="text" class="form-control" id="input-title">
+        </div>
+        <div class="col md-4">
+            <label for="input-site" class="my-1">Site Name</label>
+            <input type="text" class="form-control" id="input-site" placeholder="">
+        </div>
+        <div class="col md-4">
+        </div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-year" class="my-1">Date Published <i class="bi-question-circle link-secondary" id="web-date-info" title=""></i></label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="input-year" placeholder="Year">
+                <select class="form-control" id="input-month" placeholder="Month">
+                    <option value="">- Month -</option>
+                    <option value="Jan.">January</option>
+                    <option value="Feb.">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="Aug.">August</option>
+                    <option value="Sept.">September</option>
+                    <option value="Oct.">October</option>
+                    <option value="Nov.">November</option>
+                    <option value="Dec.">December</option>
+                </select>
+                <input type="number" class="form-control" id="input-day" min="1" max="31" placeholder="Day">
+            </div>
+        </div>
+        <div class="col md-4">
+        <label for="input-access-year" class="my-1">Date Accessed <i class="bi-question-circle link-secondary" id="web-access-info" title=""></i></label>
+        <div class="input-group">
+            <input type="number" class="form-control" id="input-access-year" placeholder="Year">
+            <select class="form-control" id="input-access-month" placeholder="Month">
+                <option value="">- Month -</option>
+                <option value="Jan.">January</option>
+                <option value="Feb.">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="Aug.">August</option>
+                <option value="Sept.">September</option>
+                <option value="Oct.">October</option>
+                <option value="Nov.">November</option>
+                <option value="Dec.">December</option>
+            </select>
+            <input type="number" class="form-control" id="input-access-day" min="1" max="31" placeholder="Day">
+        </div>
+        <div class="col md-4">
+            <div class="form-check">
+                <label for="input-today" class="my-1 form-check-label">Use today's date.</label>
+                <input type="checkbox" class="form-check-input" id="input-today" checked>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-publisher" class="my-1">Website Publisher</label>
+            <input type="text" class="form-control" id="input-publisher">
+        </div>
+        <div class="col md-4">
+            <label for="input-url" class="my-1">URL</label>
+            <input type="text" class="form-control" id="input-url" placeholder="http://www...">
+        </div>
+        <div class="col md-4"></div>
+    </div>`;
     }
     else if(medium == "video" && format === "mla")
     {
-        //TODO: Add combined field for author's first/last names. A checkbox can determine multiple authors: use "et al."
         fields.innerHTML = `<div class="row g-3 my-1" id="author-0">
         <div class="input-group">
             <span class="input-group-text">Author</span>
@@ -335,18 +429,18 @@ function checkFields()
                 <input type="number" class="form-control" id="input-year" placeholder="Year">
                 <select class="form-control" id="input-month" placeholder="Month">
                     <option value="">- Month -</option>
-                    <option value="January">January</option>
-                    <option value="February">February</option>
+                    <option value="Jan.">January</option>
+                    <option value="Feb.">February</option>
                     <option value="March">March</option>
                     <option value="April">April</option>
                     <option value="May">May</option>
                     <option value="June">June</option>
                     <option value="July">July</option>
-                    <option value="August">August</option>
-                    <option value="September">September</option>
-                    <option value="October">October</option>
-                    <option value="November">November</option>
-                    <option value="December">December</option>
+                    <option value="Aug.">August</option>
+                    <option value="Sept.">September</option>
+                    <option value="Oct.">October</option>
+                    <option value="Nov.">November</option>
+                    <option value="Dec.">December</option>
                 </select>
                 <input type="number" class="form-control" id="input-day" min="1" max="31" placeholder="Day">
             </div>
