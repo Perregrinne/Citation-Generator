@@ -285,7 +285,69 @@ function checkFields()
     }
     if(medium === "book" && format === "mla")
     {
-        fields.innerHTML = "";
+        fields.innerHTML = `<div class="row g-3 my-1" id="author-0">
+        <div class="input-group">
+            <span class="input-group-text">Author</span>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-first-0">
+                <label for="input-first-0" class="my-1 text-nowrap">First Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-middle-0">
+                <label for="input-middle-0" class="my-1 text-nowrap">Middle Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="input-last-0">
+                <label for="input-last-0" class="my-1 text-nowrap">Last Name</label>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col md-12">
+            <button class="btn btn-primary" onclick="addAuthor()">+Author</button>
+        </div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-title" class="my-1">Title</label>
+            <input type="text" class="form-control" id="input-title">
+        </div>
+        <div class="col md-4">
+            <label for="input-edition" class="my-1 text-nowrap">Edition Number</label>
+            <input type="number" class="form-control" id="input-edition" min="1">
+        </div>
+        <div class="col md-4"></div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-publisher" class="my-1">Publisher</label>
+            <input type="text" class="form-control" id="input-publisher">
+        </div>
+        <div class="col md-4">
+            <label for="input-year" class="my-1 text-nowrap">Year Published</label>
+            <input type="number" class="form-control" id="input-year">
+        </div>
+        <div class="col md-4"></div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-database" class="my-1 text-nowrap">Database</label>
+            <input type="text" class="form-control" id="input-database">
+        </div>
+        <div class="col md-4"></div>
+        <div class="col md-4"></div>
+    </div>
+    <div class="row g-3 my-1">
+        <div class="col md-4">
+            <label for="input-doi" class="my-1 text-nowrap">DOI <i class="bi-question-circle link-secondary" id="doi-info" title=""></i></label>
+            <input type="text" class="form-control" id="input-doi" placeholder="DOI: ...  OR  https://doi.org/...">
+        </div>
+        <div class="col md-4">
+            <label for="input-url" class="my-1 text-nowrap">URL (If Found Online) <i class="bi-question-circle link-secondary" id="url-info" title=""></i></label>
+            <input type="text" class="form-control" id="input-url">
+        </div>
+        <div class="col md-4"></div>
+    </div>`;
     }
     else if(medium == "web" && format === "mla")
     {

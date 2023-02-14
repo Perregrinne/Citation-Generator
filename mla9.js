@@ -107,14 +107,76 @@ function getDateAccessed()
 
 function bookMLA()
 {
-    //
+    const citation  = document.querySelector("#citation-output");
+
+    const author0   = document.querySelector("#input-last-0").value;
+    let   publisher = document.querySelector("#input-publisher").value;
+    const title     = document.querySelector("#input-title").value;
+    const edition   = document.querySelector("#input-edition").value;
+    let   database  = document.querySelector("#input-database").value; //TODO: Must italicize, if provided!
+    let   year      = document.querySelector("#input-year").value;
+    const doi       = document.querySelector("#input-doi").value;
+    const url       = document.querySelector("#input-url").value;
+
+    //Error checking:
+    let error = "";
+    error += (!author0)   ? "An author is required. "          : "";
+    error += (!title)     ? "The title is required. "          : "";
+    error += (!publisher) ? "The publisher is required. "      : "";
+    error += (!year)      ? "The year published is required. " : "";
+    error += (database && (!url || !doi)) ? "Databases require a URL or DOI. " : "";
+    citation.innerHTML = error;
+    if(error) return;
+
+    const author = getMLAAuthorList();
+    
+    let   locate = ""; //We only keep the DOI -OR- the URL. It can be blank.
+    if(doi)      locate = doi;
+    else if(url) locate = url;
+    //The URL or DOI is guaranteed to be the final piece, which we end with a period:
+    if(locate)   locate += "."; //I hate that MLA has this period after URL or DOI.
+    
+    if(database)
+    {
+        database = "<i>" + database + "</i>";
+        if(locate) database += ", "; //Determine if database is the last element or not.
+        else       database += ".";  //The last listed piece is punctuated with a period.
+    }
+
+    //We determine if year is the last listed citation piece and end it accordingly.
+    if(locate || database) year += ", ";
+    else year += ".";
+
+    //If the title ends in a period, we don't want to have two periods because we add our own later:
+    if(title.charAt(title.length - 1) === ".") title = title.substring(0, title.length - 1);
+    //If we don't have a title (like when citing a whole website), this won't affect anything anyways.
+
+    //MLA edition sections are a bit different from APA edition sections
+    let fullTitle = "<i>" + title + "</i>";
+    if(edition && edition > 0)
+    {
+        //We can't simply say if edition is 1, then use 1st, because we say 21st, 31st, etc.
+        //So, we need to check the last digit (and check for special cases like 11, 12, and 13)
+        const ones = edition % 10;
+        const tens = edition % 100; //For handling cases where edition is or ends in 11, 12, or 13
+        if     (ones === 1 && tens !== 11) fullTitle += ". " + edition + "st ed.";
+        else if(ones === 2 && tens !== 12) fullTitle += ". " + edition + "nd ed.";
+        else if(ones === 3 && tens !== 13) fullTitle += ". " + edition + "rd ed.";
+        else                               fullTitle += ". " + edition + "th ed.";
+        //A comma will follow the period after the edition, but that's expected. It just looks weird.
+    }
+
+    //Citation building:
+    let citationStr = `${author}${fullTitle}, ${publisher}, ${year}${database}${locate}`;
+
+    citation.innerHTML = citationStr;
 }
 
 function webMLA()
 {
     const citation  = document.querySelector("#citation-output");
 
-    let publisher = document.querySelector("#input-publisher").value;
+    let   publisher = document.querySelector("#input-publisher").value;
     const title     = document.querySelector("#input-title").value;
     const site      = document.querySelector("#input-site").value;
     const url       = document.querySelector("#input-url").value;
@@ -127,20 +189,18 @@ function webMLA()
     if(title.charAt(title.length - 1) === ".") title = title.substring(0, title.length - 1);
     //If we don't have a title (like when citing a whole website), this won't affect anything anyways.
 
-    if(publisher) publisher += ", ";
-
     //Error checking:
     let error = "";
-    error += (!site)      ? "The site is required. "     : "";
-    error += (!publisher) ? "The publisher is required." : "";
-    error += (!url)       ? "The url is required."       : "";
+    error += (!site)      ? "The site is required. "      : "";
+    error += (!publisher) ? "The publisher is required. " : "";
+    error += (!url)       ? "The url is required."        : "";
     citation.innerHTML = error;
     if(error) return;
     
     //Citation building:
     let citationStr = "";
-    if(title) citationStr = `${author}"${title}." <i>${site}</i>, ${publisher}${date}${url}.${accessed}`;
-    else      citationStr = `${author} <i>${site}</i>, ${publisher}${date}${url}.${accessed}`;
+    if(title) citationStr = `${author}"${title}." <i>${site}</i>, ${publisher}, ${date}${url}.${accessed}`;
+    else      citationStr = `${author} <i>${site}</i>, ${publisher}, ${date}${url}.${accessed}`;
     //Adding a period to the end of the URL is an abomination, and the Modern Language
     //Association should recognize that. It appears as if the period is part of the URL,
     //when in fact, it's not. For the sake of clarity, URLs should have NOTHING after them.
