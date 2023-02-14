@@ -21,7 +21,7 @@ I got sick of other citation generator websites gunking up their websites with l
 
 &#9745; APA 7 video citations
 
-&#9744; MLA 9 book citations **(In progress)**
+&#9745; MLA 9 book citations
 
 &#9745; MLA 9 web citations
 
