@@ -212,27 +212,30 @@ function videoMLA()
 {
     const citation = document.querySelector("#citation-output");
 
-    const channel  = document.querySelector("#input-channel").value || "Anonymous";
+    let   channel  = document.querySelector("#input-channel").value;
     const title    = document.querySelector("#input-title").value;
     const site     = document.querySelector("#input-site").value;
     const url      = document.querySelector("#input-url").value;
 
     const author   = getMLAAuthorList();
     const date     = getMLADate();
+
+    if(channel) channel = `uploaded by ${channel}, `;
     
     //If the title ends in a period, we don't want to have two periods because we add our own later:
     if(title.charAt(title.length - 1) === ".") title = title.substring(0, title.length - 1);
 
     //Error checking:
     let error = "";
-    error += (!title) ? "A title is required. "                           : "";
-    error += (!site)  ? "The site is required. "                          : "";
-    error += (!url)   ? "The URL is needed, as this cites online videos." : "";
+    error += (!url && !author) ? "An author or channel name is required. "          : "";
+    error += (!title)          ? "A title is required. "                            : "";
+    error += (!site)           ? "The site is required. "                           : "";
+    error += (!url)            ? "The URL is needed, as this cites online videos. " : "";
     citation.innerHTML = error;
     if(error) return;
     
     //Citation building:
-    const citationStr = `${author}"${title}." <i>${site}</i>, uploaded by ${channel}, ${date}${url}`;
+    const citationStr = `${author}"${title}." <i>${site}</i>, ${channel}${date}${url}`;
     //If we don't have any authors, ${author} is empty. If we do, it has the names, period, and space taken care of.
 
     citation.innerHTML = citationStr;

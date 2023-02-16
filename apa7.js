@@ -165,7 +165,7 @@ function webAPA()
     let citeStr      = "";
 
     const authorList = (author0) ? getAPAAuthorList() : "";
-    const date       = getDate();
+    const date       = getAPADate();
 
     //If the content is not likely to change, we won't include a retrieval date:
     const dateObj = new Date();
@@ -188,7 +188,7 @@ function videoAPA() {
     const site     = document.querySelector("#input-site").value;
     const url      = document.querySelector("#input-url").value;
 
-    const date = getDate();
+    const date = getAPADate();
 
     //Error checking:
     let error = "";
