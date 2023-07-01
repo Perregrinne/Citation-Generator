@@ -29,4 +29,4 @@ I got sick of other citation generator websites gunking up their websites with l
 
 ---
 
-You can try it out here: https://perregrinne.github.io/Citation-Generator/
+You can try it out here: [citation-generator.net](https://citation-generator.net/)
